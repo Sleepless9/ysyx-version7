@@ -416,5 +416,54 @@ int x = rand() % 11 +10;
 
 ## 8.3 数组应用实例：直方图
 
+## 8.4 字符串
 
+## 8.5 多维数组
+例 8.5. 剪刀石头布
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main(void)
+{
+	char gesture[3][10] = { "scissor", "stone", "cloth" };
+	int man, computer, result, ret;
+
+	srand(time(NULL));
+	while (1) {
+		computer = rand() % 3;
+	  	printf("\nInput your gesture (0-scissor 1-stone 2-cloth):\n");
+		ret = scanf("%d", &man);
+	  	if (ret != 1 || man < 0 || man > 2) {
+			printf("Invalid input! Please input 0, 1 or 2.\n");
+			continue;
+		}
+		printf("Your gesture: %s\tComputer's gesture: %s\n", 
+			gesture[man], gesture[computer]);
+
+		result = (man - computer + 4) % 3 - 1;
+		if (result > 0)
+			printf("You win!\n");
+		else if (result == 0)
+			printf("Draw!\n");
+		else
+			printf("You lose!\n");
+	}
+	return 0;
+}
+```
+留给读者思考的问题是：(man - computer + 4) % 3 - 1这个神奇的表达式是如何比较出0、1、2这三个数字在“剪刀石头布”意义上的大小的？
+
+这确实是个很妙的实现，我从结果的角度解释一下。当人机出手相同，结果为零，认为平；当人胜机，则`man-computer+4`为2或者5，结果为1；当机胜人，`man-computer+4`为3或6，结果为-1。毫无疑问，肯定要模3，实际上，+4等同于+1，+1又可以与后面的-1抵消，所以判断可以改为
+```
+		if (result == 1 || result == -2)
+			printf("You win!\n");
+		else if (result == 0)
+			printf("Draw!\n");
+		else
+			printf("You lose!\n");
+```
+
+# Chapter 9
 
